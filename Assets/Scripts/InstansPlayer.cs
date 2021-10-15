@@ -11,6 +11,8 @@ public class InstansPlayer : MonoBehaviour
         if (PlayerPrefs.HasKey("chosenSkin"))
             prefab = Resources.Load("Skins/" + PlayerPrefs.GetString("chosenSkin")) as GameObject;
 
-        Instantiate(prefab, Vector2.zero, Quaternion.identity);
+        var player = Instantiate(prefab, Vector2.zero, Quaternion.identity);
+
+        transform.SetParent(player.transform);
     }
 }
