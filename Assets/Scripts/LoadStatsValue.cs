@@ -13,8 +13,5 @@ public class LoadStatsValue : MonoBehaviour
 
         if (PlayerPrefs.HasKey(valueName))
             text.text = PlayerPrefs.GetInt(valueName).ToString();
-
-        //text.resizeTextForBestFit = false;
-        //text.fontSize = gameObject.transform.parent.transform.GetChild(0).GetComponent<Text>().fontSize;
     }
 }
