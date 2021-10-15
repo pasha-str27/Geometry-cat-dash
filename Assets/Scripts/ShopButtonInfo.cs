@@ -12,6 +12,7 @@ public class ShopButtonInfo : MonoBehaviour
 
     private void Start()
     {
-        transform.GetChild(0).GetComponent<Text>().text = price.ToString() + " звезди";
+        if(!PlayerPrefs.HasKey(skinName + "buyed"))
+            transform.GetChild(0).GetComponent<Text>().text = price.ToString() + " звезди";
     }
 }

@@ -22,17 +22,17 @@ public class ShopController : MonoBehaviour
     {
         var info = shopButtons[0].GetComponent<ShopButtonInfo>();
 
-        if(!PlayerPrefs.HasKey("chosenSkin"))
-        {
+        if (!PlayerPrefs.HasKey("chosenSkin"))
             PlayerPrefs.SetString("chosenSkin", info.skinName);
-            PlayerPrefs.SetInt(info.skinName + "buyed", 1);
-            info.isBuyedSkin = true;
+
+        PlayerPrefs.SetInt(info.skinName + "buyed", 1);
+        info.isBuyedSkin = true;
 
             PlayerPrefs.SetInt(info.skinName + "choosen", 1);
             info.isChosenSkin = true;
 
             choosenSkin = shopButtons[0];
-        }
+        //}
 
         for (int i = 0; i < shopButtons.Length; ++i) 
         {
@@ -43,12 +43,12 @@ public class ShopController : MonoBehaviour
 
             if (PlayerPrefs.HasKey(info.skinName + "choosen") && PlayerPrefs.GetString("chosenSkin") == info.skinName) 
             {
-                if(choosenSkin)
-                {
+                //if(choosenSkin)
+                //{
                     choosenSkin.GetComponent<ShopButtonInfo>().isChosenSkin = false;
                     choosenSkin.gameObject.SetActive(true);
                     choosenSkin.transform.GetChild(0).GetComponent<Text>().text = "вибрать";
-                }
+                //}
                 choosenSkin = shopButtons[i];
                 info.isChosenSkin = true;
             }
@@ -80,11 +80,11 @@ public class ShopController : MonoBehaviour
         }
 
 
-        button.transform.GetChild(0).transform.GetComponent<Text>().text = "вибрать";
+        //button.transform.GetChild(0).transform.GetComponent<Text>().text = "вибрать";
         PlayerPrefs.SetInt(buttonInfo.skinName + "choosen", 1);
         PlayerPrefs.SetString("chosenSkin", buttonInfo.skinName);
         buttonInfo.isChosenSkin = true;
-
+        print(choosenSkin.GetComponent<ShopButtonInfo>().skinName);
         choosenSkin.transform.GetChild(0).transform.GetComponent<Text>().text = "вибрать";
         choosenSkin.gameObject.SetActive(true);
         choosenSkin = button;
