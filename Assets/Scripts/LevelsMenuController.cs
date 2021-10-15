@@ -23,7 +23,7 @@ public class LevelsMenuController : MonoBehaviour
         BackwardButton.SetActive(true);
         ForwardButton.SetActive(true);
 
-        var nextLevelInfo = Resources.Load("LevelsInfo/Level"+ currentLevel.ToString()+"Info") as GameObject;
+        var nextLevelInfo = Resources.Load("LevelsInfo/Level" + currentLevel.ToString() + "Info") as GameObject;
 
         var nextLevelInfoGO = Instantiate(nextLevelInfo, transform);
         Destroy(currentLevelInfo);

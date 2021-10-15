@@ -50,7 +50,7 @@ public class LoadLevelInfo : MonoBehaviour
             progress = PlayerPrefs.GetInt("level" + level + "progress");
 
         levelProgress.value = progress / 100f;
-        levelProgress.transform.GetChild(levelProgress.transform.GetChildCount() - 1).gameObject.GetComponent<Text>().text = progress.ToString() + "%";
+        levelProgress.transform.GetChild(levelProgress.transform.childCount - 1).gameObject.GetComponent<Text>().text = progress.ToString() + "%";
     }
 
     public void LoadLevel()

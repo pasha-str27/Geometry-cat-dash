@@ -28,11 +28,10 @@ public class ShopController : MonoBehaviour
         PlayerPrefs.SetInt(info.skinName + "buyed", 1);
         info.isBuyedSkin = true;
 
-            PlayerPrefs.SetInt(info.skinName + "choosen", 1);
-            info.isChosenSkin = true;
+        PlayerPrefs.SetInt(info.skinName + "choosen", 1);
+        info.isChosenSkin = true;
 
-            choosenSkin = shopButtons[0];
-        //}
+        choosenSkin = shopButtons[0];
 
         for (int i = 0; i < shopButtons.Length; ++i) 
         {
@@ -43,12 +42,9 @@ public class ShopController : MonoBehaviour
 
             if (PlayerPrefs.HasKey(info.skinName + "choosen") && PlayerPrefs.GetString("chosenSkin") == info.skinName) 
             {
-                //if(choosenSkin)
-                //{
-                    choosenSkin.GetComponent<ShopButtonInfo>().isChosenSkin = false;
-                    choosenSkin.gameObject.SetActive(true);
-                    choosenSkin.transform.GetChild(0).GetComponent<Text>().text = "вибрать";
-                //}
+                choosenSkin.GetComponent<ShopButtonInfo>().isChosenSkin = false;
+                choosenSkin.gameObject.SetActive(true);
+                choosenSkin.transform.GetChild(0).GetComponent<Text>().text = "вибрать";
                 choosenSkin = shopButtons[i];
                 info.isChosenSkin = true;
             }
@@ -80,7 +76,6 @@ public class ShopController : MonoBehaviour
         }
 
 
-        //button.transform.GetChild(0).transform.GetComponent<Text>().text = "вибрать";
         PlayerPrefs.SetInt(buttonInfo.skinName + "choosen", 1);
         PlayerPrefs.SetString("chosenSkin", buttonInfo.skinName);
         buttonInfo.isChosenSkin = true;
