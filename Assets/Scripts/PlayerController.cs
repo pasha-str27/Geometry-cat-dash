@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public GameObject bestResultParticles;
     bool wasBestResult = false;
     bool isBestResultOnScene = false;
+    int jumpsBySession = 0;
 
     void Start()
     {
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
             rigidbody.AddForce(Vector2.up  * force, ForceMode2D.Impulse);
             canJump = false;
             jumpsCount++;
+            jumpsBySession++;
         }
     }
 
@@ -67,22 +69,44 @@ public class PlayerController : MonoBehaviour
             PlayerPrefs.SetFloat("bestResult" + gameController.level.ToString(), transform.position.x);
 
         PlayerPrefs.SetInt("level" + lelelStr + "jumps", jumpsCount);
+
+        if (!PlayerPrefs.HasKey("Jumps"))
+            PlayerPrefs.SetInt("Jumps", jumpsBySession);
+        else
+            PlayerPrefs.SetInt("Jumps", jumpsBySession + PlayerPrefs.GetInt("Jumps"));
+
+        if (!PlayerPrefs.HasKey("Tryes"))
+            PlayerPrefs.SetInt("Tryes", 1);
+        else
+            PlayerPrefs.SetInt("Tryes", 1 + PlayerPrefs.GetInt("Tryes"));
+
+        if (!PlayerPrefs.HasKey("Stars"))
+            PlayerPrefs.SetInt("Stars", starsCount);
+        else
+            PlayerPrefs.SetInt("Stars", starsCount + PlayerPrefs.GetInt("Stars"));
+        
+
         gameController.GameOver();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("LevelFinish"))
-        {
-            print("end");
-            UpdateResults();
-            SceneManager.LoadScene("Menu");
-        }
 
         if (collision.CompareTag("Star"))
         {
+            print("here");
             Destroy(collision.gameObject);
             starsCount++;
+        }
+
+        if (collision.CompareTag("LevelFinish"))
+        {
+            print("end");
+            if (!PlayerPrefs.HasKey("levelComplete" + gameController.level.ToString()))
+                PlayerPrefs.SetInt("levelComplete" + gameController.level.ToString(), 1);
+
+            UpdateResults();
+            SceneManager.LoadScene("Menu");
         }
     }
 

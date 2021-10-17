@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class ShopController : MonoBehaviour
 {
-    public int starsCount = 200;
+    public int starsCount = 0;
     public Text starsValueLabel;
     public Button[] shopButtons;
     Button choosenSkin;
@@ -66,6 +66,9 @@ public class ShopController : MonoBehaviour
             if (starsCount >= buttonInfo.price)
             {
                 starsCount -= buttonInfo.price;
+
+                PlayerPrefs.SetInt("Stars", starsCount);
+
                 starsValueLabel.text = starsCount.ToString();
                 buttonInfo.isBuyedSkin = true;
                 button.transform.GetChild(0).transform.GetComponent<Text>().text = "вибрать";
@@ -79,7 +82,6 @@ public class ShopController : MonoBehaviour
         PlayerPrefs.SetInt(buttonInfo.skinName + "choosen", 1);
         PlayerPrefs.SetString("chosenSkin", buttonInfo.skinName);
         buttonInfo.isChosenSkin = true;
-        print(choosenSkin.GetComponent<ShopButtonInfo>().skinName);
         choosenSkin.transform.GetChild(0).transform.GetComponent<Text>().text = "вибрать";
         choosenSkin.gameObject.SetActive(true);
         choosenSkin = button;

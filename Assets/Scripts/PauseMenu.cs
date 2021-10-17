@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     public void LoadMenu()
     {
         Time.timeScale = 1;
+        GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>().UpdateResults();
         SceneManager.LoadScene("Menu");
     }
 

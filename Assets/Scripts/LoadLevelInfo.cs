@@ -24,6 +24,7 @@ public class LoadLevelInfo : MonoBehaviour
 
         if (PlayerPrefs.HasKey("level" + level + "tryes"))
             value = PlayerPrefs.GetInt("level" + level + "tryes");
+
         tryesValueLabel.text = value.ToString();
 
         value = 0;
