@@ -242,4 +242,4 @@ MonoBehaviour:
   speed: 300
   gameController: {fileID: 0}
   bestResultPrefab: {fileID: 6568109361462192419, guid: 6cdf0b707da54884cabbb17e8d734ccb, type: 3}
-  bestResultParticles: {fileID: 0}
+  bestResultParticles: {fileID: 7499427725168911335, guid: 74d32bbb60a55c748b4e659c62906e2b, type: 3}

@@ -7,11 +7,20 @@ public class GameController : MonoBehaviour
     public int levelTime = 45;
     public int time;
     public int level = 1;
+    public GameObject deadPlace;
 
     void Start()
     {
         time = 0;
         StartCoroutine(LevelTimer());
+
+        if(PlayerPrefs.HasKey("deadPosX"+level.ToString()))
+        {
+            Vector2 deadPos;
+            deadPos.x = PlayerPrefs.GetFloat("deadPosX" + level.ToString());
+            deadPos.y = PlayerPrefs.GetFloat("deadPosY" + level.ToString()) - 1;
+            Instantiate(deadPlace, deadPos, Quaternion.identity);
+        }
     }
 
     IEnumerator LevelTimer()

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     int starsCount = 0;
     public GameObject bestResultParticles;
     bool wasBestResult = false;
+    bool isBestResultOnScene = false;
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class PlayerController : MonoBehaviour
         {
             bestResultX = PlayerPrefs.GetFloat("bestResult" + gameController.level.ToString());
             Instantiate(bestResultPrefab, new Vector3(bestResultX + 1, 0, 0), Quaternion.Euler(0,0,-90));
+            isBestResultOnScene = true;
         }
 
         rigidbody = GetComponent<Rigidbody2D>();
@@ -37,10 +39,10 @@ public class PlayerController : MonoBehaviour
         if (canMove)
             transform.Translate(Vector2.right * speed * Time.deltaTime * Time.deltaTime);
 
-        if(!wasBestResult && bestResultX <= transform.position.x)
+        if(isBestResultOnScene && !wasBestResult && bestResultX <= transform.position.x)
         {
             wasBestResult = true;
-            //start particles
+            Destroy(Instantiate(bestResultParticles, transform), 2);
         }
     }
 
