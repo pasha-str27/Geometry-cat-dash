@@ -34,7 +34,9 @@ public class GameController : MonoBehaviour
 
     public void GameOver()
     {
-        PlayerPrefs.SetFloat("level" + level.ToString() + "progress", (float)time/levelTime);
+        if(!PlayerPrefs.HasKey("level" + level.ToString() + "progress") ||
+            PlayerPrefs.GetFloat("level" + level.ToString() + "progress") < (float)time / levelTime)
+                PlayerPrefs.SetFloat("level" + level.ToString() + "progress", (float)time/levelTime);
 
         if (!PlayerPrefs.HasKey("level" + level.ToString() + "tryes"))
             PlayerPrefs.SetInt("level" + level.ToString() + "tryes", 1);

@@ -49,7 +49,6 @@ public class LoadLevelInfo : MonoBehaviour
         float progress = 0;
         if (PlayerPrefs.HasKey("level" + level + "progress"))
             progress = PlayerPrefs.GetFloat("level" + level + "progress");
-
         levelProgress.value = progress;
         levelProgress.transform.GetChild(levelProgress.transform.childCount - 1).gameObject.GetComponent<Text>().text = ((int)(progress*100)).ToString() + "%";
     }

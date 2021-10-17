@@ -15,7 +15,9 @@ public class InstansPlayer : MonoBehaviour
 
         var player = Instantiate(prefab, Vector2.zero, Quaternion.identity);
 
-        transform.SetParent(player.transform);
+        GetComponent<CameraFollow>().target = player.transform;
+
+       // transform.SetParent(player.transform);
 
         player.GetComponent<PlayerController>().gameController = this.gameController;
 

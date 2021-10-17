@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     Rigidbody2D rigidbody;
     public float force = 30;
+    public float forceToFly = 0.1f;
     bool canJump = true;
     public float speed = 2;
     bool canMove = false;
@@ -19,6 +20,13 @@ public class PlayerController : MonoBehaviour
     bool wasBestResult = false;
     bool isBestResultOnScene = false;
     int jumpsBySession = 0;
+
+    public Sprite jumpTexture;
+    public Sprite flyTexture;
+
+    bool isFlyingMode = false;
+
+    bool changeAngles = false;
 
     void Start()
     {
@@ -49,12 +57,28 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (canJump && Input.GetMouseButton(0))
+        if(isFlyingMode)
         {
-            rigidbody.AddForce(Vector2.up  * force, ForceMode2D.Impulse);
-            canJump = false;
-            jumpsCount++;
-            jumpsBySession++;
+            if (Input.GetMouseButtonDown(0))
+                changeAngles = true;
+
+            if (changeAngles)
+                transform.eulerAngles = new Vector3(0, 0, rigidbody.velocity.y * 2);
+        }
+
+        if ((canJump || isFlyingMode) && Input.GetMouseButton(0))
+        {
+            if(isFlyingMode)
+                rigidbody.AddForce(Vector2.up  * forceToFly, ForceMode2D.Impulse);
+            else
+                rigidbody.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+
+            if (canJump && !isFlyingMode)
+            {
+                canJump = false;
+                jumpsCount++;
+                jumpsBySession++;
+            }
         }
     }
 
@@ -92,6 +116,17 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
+        if (collision.CompareTag("GameModeChanger"))
+        {
+            if (isFlyingMode)
+                GetComponent<SpriteRenderer>().sprite = jumpTexture;
+            else
+                GetComponent<SpriteRenderer>().sprite = flyTexture;
+
+            isFlyingMode = !isFlyingMode;
+            transform.eulerAngles = Vector3.zero;
+        }
+
         if (collision.CompareTag("Star"))
         {
             print("here");
@@ -101,7 +136,6 @@ public class PlayerController : MonoBehaviour
 
         if (collision.CompareTag("LevelFinish"))
         {
-            print("end");
             if (!PlayerPrefs.HasKey("levelComplete" + gameController.level.ToString()))
                 PlayerPrefs.SetInt("levelComplete" + gameController.level.ToString(), 1);
 
@@ -112,7 +146,32 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        canJump = true;
-        canMove = true;
+        if (collision.gameObject.CompareTag("Triangle"))
+        {
+            PlayerPrefs.SetFloat("deadPosX" + gameController.level.ToString(), gameObject.transform.position.x);
+            PlayerPrefs.SetFloat("deadPosY" + gameController.level.ToString(), gameObject.transform.position.y);
+
+            UpdateResults();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            return;
+        }
+
+        if (collision.gameObject.CompareTag("Floor"))
+        {
+            if (!isFlyingMode)
+            {
+                canJump = true;
+                canMove = true;
+            }
+            else
+            {
+                PlayerPrefs.SetFloat("deadPosX" + gameController.level.ToString(), gameObject.transform.position.x);
+                PlayerPrefs.SetFloat("deadPosY" + gameController.level.ToString(), gameObject.transform.position.y);
+
+                UpdateResults();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                return;
+            }
+        }
     }
 }
