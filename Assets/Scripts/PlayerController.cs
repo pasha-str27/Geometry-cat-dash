@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -9,21 +10,77 @@ public class PlayerController : MonoBehaviour
     bool canJump = true;
     public float speed = 2;
     bool canMove = false;
+    int jumpsCount;
+    public GameController gameController;
+    public GameObject bestResultPrefab;
+    float bestResultX;
+    int starsCount = 0;
+    public GameObject bestResultParticles;
+    bool wasBestResult = false;
 
     void Start()
     {
+        if (PlayerPrefs.HasKey("bestResult"+ gameController.level.ToString()))
+        {
+            bestResultX = PlayerPrefs.GetFloat("bestResult" + gameController.level.ToString());
+            Instantiate(bestResultPrefab, new Vector3(bestResultX + 1, 0, 0), Quaternion.Euler(0,0,-90));
+        }
+
         rigidbody = GetComponent<Rigidbody2D>();
+        jumpsCount = 0;
+        if (PlayerPrefs.HasKey("level" + gameController.level.ToString() + "jumps"))
+            jumpsCount = PlayerPrefs.GetInt("level" + gameController.level.ToString() + "jumps");
+    }
+
+    private void FixedUpdate()
+    {
+        if (canMove)
+            transform.Translate(Vector2.right * speed * Time.deltaTime * Time.deltaTime);
+
+        if(!wasBestResult && bestResultX <= transform.position.x)
+        {
+            wasBestResult = true;
+            //start particles
+        }
     }
 
     void Update()
     {
-        if(canMove)
-            transform.Translate(Vector2.right * speed * Time.deltaTime * Time.deltaTime);
-
         if (canJump && Input.GetMouseButton(0))
         {
             rigidbody.AddForce(Vector2.up  * force, ForceMode2D.Impulse);
             canJump = false;
+            jumpsCount++;
+        }
+    }
+
+    public void UpdateResults()
+    {
+        string lelelStr = gameController.level.ToString();
+
+        if (!PlayerPrefs.HasKey("level" + lelelStr + "stars") || starsCount > PlayerPrefs.GetInt("level" + lelelStr + "stars"))
+            PlayerPrefs.SetInt("level" + lelelStr + "stars", starsCount);
+
+        if (bestResultX < transform.position.x)
+            PlayerPrefs.SetFloat("bestResult" + gameController.level.ToString(), transform.position.x);
+
+        PlayerPrefs.SetInt("level" + lelelStr + "jumps", jumpsCount);
+        gameController.GameOver();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("LevelFinish"))
+        {
+            print("end");
+            UpdateResults();
+            SceneManager.LoadScene("Menu");
+        }
+
+        if (collision.CompareTag("Star"))
+        {
+            Destroy(collision.gameObject);
+            starsCount++;
         }
     }
 

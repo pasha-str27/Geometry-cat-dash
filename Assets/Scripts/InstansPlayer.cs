@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class InstansPlayer : MonoBehaviour
 {
+    public GameController gameController;
+
     void Start()
     {
         var prefab = Resources.Load("Skins/skin1") as GameObject;
@@ -14,5 +16,15 @@ public class InstansPlayer : MonoBehaviour
         var player = Instantiate(prefab, Vector2.zero, Quaternion.identity);
 
         transform.SetParent(player.transform);
+
+        player.GetComponent<PlayerController>().gameController = this.gameController;
+
+        //StartCoroutine(levelTimer());
     }
+
+    //IEnumerator levelTimer()
+    //{
+    //    yield return new WaitForSeconds(levelTime);
+    //    Time.timeScale = 0;
+    //}
 }

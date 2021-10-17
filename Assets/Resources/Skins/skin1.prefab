@@ -71,6 +71,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cba099e29615df4b9573279227b99fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player: {fileID: -8096762110995118830}
 --- !u!50 &2251181139923831532
 Rigidbody2D:
   serializedVersion: 4
@@ -239,3 +240,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   force: 5.5
   speed: 300
+  gameController: {fileID: 0}
+  bestResultPrefab: {fileID: 6568109361462192419, guid: 6cdf0b707da54884cabbb17e8d734ccb, type: 3}
+  bestResultParticles: {fileID: 0}
